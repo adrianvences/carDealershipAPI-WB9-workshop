@@ -1,6 +1,5 @@
-package com.pluralsight.dealership;
+package com.pluralsight.dealership.view;
 
-import com.pluralsight.dealership.view.UserInterface;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
