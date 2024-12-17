@@ -1,6 +1,8 @@
 package com.pluralsight.dealership.dao.vehicles;
 
 import com.pluralsight.dealership.model.Vehicle;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -11,10 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 // responsible for interacting with vehicles and inventory tables
+@Component
 public class VehicleDaoMySqlImpl implements VehicleDao {
 
     private DataSource dataSource;
 
+    @Autowired
     public VehicleDaoMySqlImpl(DataSource dataSource) {this.dataSource = dataSource;};
 
     @Override

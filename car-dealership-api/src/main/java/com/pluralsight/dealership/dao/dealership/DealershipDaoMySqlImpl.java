@@ -1,6 +1,8 @@
 package com.pluralsight.dealership.dao.dealership;
 
 import com.pluralsight.dealership.model.Dealership;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -11,12 +13,14 @@ import java.util.List;
 
  // DealershipDaoMySqlImpl implements DealershipDao
  // meaning that this class implements the logic for the methods from the interface
+
 public class DealershipDaoMySqlImpl implements DealershipDao {
 
     private final DataSource dataSource;
 
     // constructor takes a dataSource object as a parameter
     // dataSource object provides connection to the database
+
     public DealershipDaoMySqlImpl(DataSource dataSource) {this.dataSource = dataSource;}
 
     @Override

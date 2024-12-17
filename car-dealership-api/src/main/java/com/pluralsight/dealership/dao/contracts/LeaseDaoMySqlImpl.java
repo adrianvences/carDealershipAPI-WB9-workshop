@@ -1,12 +1,13 @@
 package com.pluralsight.dealership.dao.contracts;
 
 import com.pluralsight.dealership.model.LeaseContract;
+import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-
+@Component
 public class LeaseDaoMySqlImpl implements LeaseDao {
     private final DataSource dataSource;
 
