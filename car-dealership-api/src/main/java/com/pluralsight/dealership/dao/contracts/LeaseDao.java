@@ -4,4 +4,5 @@ import com.pluralsight.dealership.model.LeaseContract;
 
 public interface LeaseDao {
     void saveLeaseContract(LeaseContract leaseContract);
+    LeaseContract findLeaseById(int id);
 }

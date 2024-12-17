@@ -1,11 +1,14 @@
 package com.pluralsight.dealership.dao.contracts;
 
 import com.pluralsight.dealership.model.LeaseContract;
+import com.pluralsight.dealership.model.SalesContract;
+import com.pluralsight.dealership.model.Vehicle;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 @Component
 public class LeaseDaoMySqlImpl implements LeaseDao {
@@ -41,5 +44,50 @@ public class LeaseDaoMySqlImpl implements LeaseDao {
             e.printStackTrace();
             throw new RuntimeException();
     }
+
+
+
 }
+
+    @Override
+    public LeaseContract findLeaseById(int id) {
+        String query = """
+                SELECT * FROM lease_contracts
+                    JOIN vehicles ON vehicles.vin = lease_contracts.vin
+                    WHERE id = ?;
+                """;
+        try(Connection connection = dataSource.getConnection()){
+            PreparedStatement findLeaseById = connection.prepareStatement(query);
+            findLeaseById.setInt(1,id);
+            ResultSet rs = findLeaseById.executeQuery();
+
+            if(rs.next()) {
+                System.out.println("res");
+                String sale_date = rs.getString("lease_start_date");
+                String customer_name = rs.getString("customer_name");
+                String customer_email = rs.getString("customer_address");
+                String vin = rs.getString("vin");
+                int year = rs.getInt("year");
+                String make = rs.getString("make");
+                String model = rs.getString("model");
+                String vehicleType = rs.getString("vehicleType");
+                String color = rs.getString("color");
+                int odometer = rs.getInt("odometer");
+                double price = rs.getDouble("price");
+                boolean sold = false;
+                System.out.println("1");
+                Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price, sold);
+                System.out.println("2");
+                LeaseContract contract = new LeaseContract(sale_date, customer_name, customer_email, vehicle, vehicle.getPrice());
+                System.out.println(contract);
+                return contract;
+            }else{
+                System.out.println("no contract");
+                return null;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace(); throw new RuntimeException();
+        }
+    }
 }
