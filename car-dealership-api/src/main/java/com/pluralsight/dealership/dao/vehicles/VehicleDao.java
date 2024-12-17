@@ -16,7 +16,7 @@ public interface VehicleDao {
     List<Vehicle> findVehicleByMileRange(int minOdom, int maxOdom);
     List<Vehicle> findVehicleByVehicleType(String vehicleType);
     Vehicle findVehicleByVIN(String vin);
-
+    void editVehicle(Vehicle vehicle,String vin);
     void removeVehicleByVIN(String vin);
-    void addVehicle(String vin, int year, String make, String model, String vehicleType, String color, int odometer, double price);
+    void addVehicle(Vehicle vehicle);
 }

@@ -3,6 +3,7 @@ package com.pluralsight.dealership.controllers.vehicle;
 import com.pluralsight.dealership.dao.vehicles.VehicleDao;
 import com.pluralsight.dealership.model.Vehicle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -59,7 +60,20 @@ public class VehicleController {
         return vehicleDao.findVehicleByVehicleType(vehicleType);
     }
 
+    @PostMapping("/addVehicle")
+    @ResponseStatus(code= HttpStatus.CREATED)
+    public void addVehicles(@RequestBody Vehicle vehicle) {vehicleDao.addVehicle(vehicle);}
 
+    @PutMapping("/editVehicle/{vin}")
+    public void putVehicle(@RequestBody Vehicle vehicle, @PathVariable("vin") String vin){
+        vehicleDao.editVehicle(vehicle,vin);
+    }
+
+    @DeleteMapping("deleteVehicleByVin/{vin}")
+    @ResponseStatus(code=HttpStatus.NO_CONTENT)
+    public void deleteVehicleByVin(@PathVariable("vin") String vin){
+        vehicleDao.removeVehicleByVIN(vin);
+    }
 
 
 

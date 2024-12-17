@@ -1,11 +1,13 @@
 package com.pluralsight.dealership.dao.contracts;
 
 import com.pluralsight.dealership.model.SalesContract;
+import com.pluralsight.dealership.model.Vehicle;
 import org.springframework.stereotype.Component;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 @Component
 public class SalesDaoMySqlImpl implements SalesDao {
@@ -54,4 +56,50 @@ public class SalesDaoMySqlImpl implements SalesDao {
         }
 
     }
+
+    @Override
+    public SalesContract findSalesContractById(int id) {
+        String query = """
+                SELECT * FROM sales_contract
+                    JOIN vehicles ON vehicles.vin = sales_contract.vin
+                    WHERE id = ?;
+                """;
+        try(Connection connection = dataSource.getConnection()){
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1,id);
+            System.out.println("start");
+            ResultSet rs = preparedStatement.executeQuery();
+            System.out.println("after");
+
+            if(rs.next()) {
+                System.out.println("res");
+                String sale_date = rs.getString("sale_date");
+                String customer_name = rs.getString("customer_name");
+                String customer_email = rs.getString("customer_address");
+                String vin = rs.getString("vin");
+                int year = rs.getInt("year");
+                String make = rs.getString("make");
+                String model = rs.getString("model");
+                String vehicleType = rs.getString("vehicleType");
+                String color = rs.getString("color");
+                int odometer = rs.getInt("odometer");
+                double price = rs.getDouble("price");
+                boolean financed = rs.getBoolean("financing");
+                boolean sold = true;
+                System.out.println("1");
+                Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price, sold);
+                System.out.println("2");
+                SalesContract contract = new SalesContract(sale_date, customer_name, customer_email, vehicle, vehicle.getPrice(), financed);
+                System.out.println(contract);
+                return contract;
+            }else{
+                System.out.println("no contract");
+                return null;
+            }
+        } catch (SQLException e){
+            e.printStackTrace(); throw new RuntimeException();
+
+        }
+    }
+
 }

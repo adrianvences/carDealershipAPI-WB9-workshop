@@ -232,7 +232,7 @@ public class UserInterface {
     // add vehicles method
     public void processAddVehicleRequest(){
         Vehicle vehicle = displayAddVehiclePrompt();
-        vehicleDB.addVehicle(vehicle.getVin(),vehicle.getYear(),vehicle.getMake(), vehicle.getModel(), vehicle.getVehicleType(), vehicle.getColor(), vehicle.getOdometer(), vehicle.getPrice());
+        vehicleDB.addVehicle(vehicle);
     }
 
     // remove vehicle method

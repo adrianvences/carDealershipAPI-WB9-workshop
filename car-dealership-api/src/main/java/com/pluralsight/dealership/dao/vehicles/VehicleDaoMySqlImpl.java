@@ -343,23 +343,40 @@ public class VehicleDaoMySqlImpl implements VehicleDao {
         return vehicle;
     }
 
+    @Override
+    public void editVehicle(Vehicle vehicle, String vin) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement preparedStatement = connection.prepareStatement("""
+                    UPDATE vehicles
+                    SET vin=?, year=?, make=?, model=?, vehicleType=?, color=?, odometer=?, price=?, sold=0
+                    WHERE vin = ?;
+                    """);
+            preparedStatement.setString(1, vehicle.getVin());
+            preparedStatement.setInt(2, vehicle.getYear());
+            preparedStatement.setString(3, vehicle.getMake());
+            preparedStatement.setString(4, vehicle.getModel());
+            preparedStatement.setString(5, vehicle.getVehicleType());
+            preparedStatement.setString(6, vehicle.getColor());
+            preparedStatement.setInt(7, vehicle.getOdometer());
+            preparedStatement.setDouble(8, vehicle.getPrice());
+            preparedStatement.setString(9, vin);
+
+            preparedStatement.executeUpdate();
 
 
-
-
-
-
-
+        } catch (SQLException e) {
+           e.printStackTrace(); throw new RuntimeException(e);
+        }
+    }
 
 
     @Override
     public void removeVehicleByVIN(String vin) {
 
         String query = """
-                DELETE vehicles,inventory
-                FROM inventory 
-                JOIN vehicles ON inventory.vin = vehicles.vin
-                WHERE inventory.vin = ?;
+                DELETE vehicles
+                FROM vehicles
+                WHERE vin = ?;
                 """;
         try(Connection connection = dataSource.getConnection()){
             PreparedStatement deleteByVIN = connection.prepareStatement(query);
@@ -373,7 +390,7 @@ public class VehicleDaoMySqlImpl implements VehicleDao {
     }
 
     @Override
-    public void addVehicle(String vin, int year, String make, String model, String vehicleType, String color, int odometer, double price) {
+    public void addVehicle(Vehicle vehicle) {
         String query = """
                 INSERT INTO vehicles (vin,year,make, model, vehicleType, color, odometer, price, sold)
                 VALUE (?, ?, ?, ?, ?, ?, ?, ?, 0);
@@ -381,14 +398,14 @@ public class VehicleDaoMySqlImpl implements VehicleDao {
 
         try(Connection connection = dataSource.getConnection()) {
             PreparedStatement addVehicle = connection.prepareStatement(query);
-            addVehicle.setString(1, vin);
-            addVehicle.setInt(2, year);
-            addVehicle.setString(3, make);
-            addVehicle.setString(4, model);
-            addVehicle.setString(5, vehicleType);
-            addVehicle.setString(6, color);
-            addVehicle.setInt(7, odometer);
-            addVehicle.setDouble(8, price);
+            addVehicle.setString(1, vehicle.getVin());
+            addVehicle.setInt(2, vehicle.getYear());
+            addVehicle.setString(3, vehicle.getMake());
+            addVehicle.setString(4, vehicle.getModel());
+            addVehicle.setString(5, vehicle.getVehicleType());
+            addVehicle.setString(6, vehicle.getColor());
+            addVehicle.setInt(7, vehicle.getOdometer());
+            addVehicle.setDouble(8, vehicle.getPrice());
 
             addVehicle.executeUpdate();
 
@@ -396,6 +413,8 @@ public class VehicleDaoMySqlImpl implements VehicleDao {
             e.printStackTrace();
         }
     }
+
+
 
 
 }
