@@ -29,6 +29,39 @@ public class VehicleController {
         return vehicleDao.findVehiclesByPriceRange(minPrice, maxPrice);
     }
 
+//    http://localhost:8080/api/vehicleByMakeModel?make=ford&model=f150
+    @GetMapping("/vehicleByMakeModel")
+    public List<Vehicle> getVehiclesByMakeModel(@RequestParam("make") String make, @RequestParam("model") String model){
+        return vehicleDao.findVehiclesByMakeModel(make, model);
+    }
+
+//    http://localhost:8080/api/vehicleByYear?minYear=1999&maxYear=2020
+    @GetMapping("/vehicleByYear")
+    public List<Vehicle> getVehiclesYearRange(@RequestParam("minYear") int minYear, @RequestParam("maxYear") int maxYear){
+        return vehicleDao.findVehiclesByYear(minYear,maxYear);
+    }
+
+//    http://localhost:8080/api/vehicleByColor?color=white
+    @GetMapping("/vehicleByColor")
+    public List<Vehicle> getVehiclesByColor(@RequestParam("color") String color){
+        return vehicleDao.findVehicleByColor(color);
+    }
+
+//    http://localhost:8080/api/vehicleByMileRange?minMiles=50000&maxMiles=150000
+    @GetMapping("/vehicleByMileRange")
+    public List<Vehicle> getVehiclesByOdometer(@RequestParam("minMiles") int minMiles, @RequestParam("maxMiles") int maxMiles){
+        return vehicleDao.findVehicleByMileRange(minMiles,maxMiles);
+    }
+
+//    http://localhost:8080/api/vehicleByType?vehicleType=truck
+    @GetMapping("/vehicleByType")
+    public List<Vehicle> getVehiclesByType(@RequestParam("vehicleType") String vehicleType){
+        return vehicleDao.findVehicleByVehicleType(vehicleType);
+    }
+
+
+
+
 
 
 
